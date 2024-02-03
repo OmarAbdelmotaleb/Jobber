@@ -1,2 +1,2 @@
 # Jobber
-SSW-696 Software Engineering Capstone Studio - Project Jobber
+SSW-695 Software Engineering Capstone Studio - Project Jobber
