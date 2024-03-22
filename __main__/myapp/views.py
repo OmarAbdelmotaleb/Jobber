@@ -1,42 +1,26 @@
-from django.shortcuts import redirect, render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import UserDetails
+from .serializers import UserDetailsSerializer  # Importing serializer
 
-# Create your views here.
-from .models import Item
-from .forms import ItemForm
+class UserDetailsAPIView(APIView):
+    def get(self, request):
+        userDetails = UserDetails.objects.all()
+        serializer = UserDetailsSerializer(userDetails, many=True)
+        return Response(serializer.data)
 
-def item_list(request):
-    items = Item.objects.all()
-    return render(request, 'myapp/item_list.html', {'items': items})
+    def post(self, request):
+        serializer = UserDetailsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def item_detail(request, pk):
-    item = Item.objects.get(pk=pk)
-    return render(request, 'myapp/item_detail.html', {'item': item})
-
-def item_create(request):
-    if request.method == 'POST':
-        form = ItemForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('item_list')
-    else:
-        form = ItemForm()
-    return render(request, 'myapp/item_form.html', {'form': form})
-
-def item_update(request, pk):
-    item = Item.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = ItemForm(request.POST, instance=item)
-        if form.is_valid():
-            form.save()
-            return redirect('item_list')
-    else:
-        form = ItemForm(instance=item)
-    return render(request, 'myapp/item_form.html', {'form': form})
-
-def item_delete(request, pk):
-    item = Item.objects.get(pk=pk)
-    if request.method == 'POST':
-        item.delete()
-        return redirect('item_list')
-    return render(request, 'myapp/item_confirm_delete.html', {'item': item})
-
+    def put(self, request, pk):
+        userDetails = UserDetails.objects.get(pk=pk)
+        serializer = UserDetailsSerializer(userDetails, data=request.data)
+        if serializer.is_valid():
+            serializer.save()   
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
