@@ -4,7 +4,7 @@ from .models import UserDetails
 class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDetails
-        fields = ['id', 'name', 'degree', 'jobProfile', 'schoolName']
+        fields = ['id', 'jobTitle', 'jobUrl', 'companyName', 'location', 'jobDescription']
 
 def get_serializer_class():
     from .serializers import UserDetailsSerializer
