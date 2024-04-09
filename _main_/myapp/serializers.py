@@ -19,13 +19,7 @@ class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = ['job_id', 'job_title', 'job_url', 'company', 'job_location', 'job_description']
-
-    def create(self, validated_data):
-        company_data = validated_data.pop('company')
-        company = Company.objects.create(**company_data)
-        job = Job.objects.create(company=company, **validated_data)
-        return job
-    
+  
 
 class ApplicationsSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all())
