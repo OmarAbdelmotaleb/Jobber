@@ -39,7 +39,7 @@ def get_serializer_class(model_name):
         return CompanySerializer
      elif model_name == 'Job':
         return JobSerializer
-      elif model_name == 'Users':
+     elif model_name == 'Users':
         return UsersSerializer
      elif model_name == 'Applications':
         return ApplicationsSerializer    
