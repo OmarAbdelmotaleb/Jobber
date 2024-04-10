@@ -19,8 +19,12 @@ class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = ['job_id', 'job_title', 'job_url', 'company', 'job_location', 'job_description']
+<<<<<<< HEAD:virtualenv/_main_/myapp/serializers.py
 
     
+=======
+  
+>>>>>>> 673d0520b8981b3e253b5ff5202febd9c81aed68:_main_/myapp/serializers.py
 
 class ApplicationsSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all())
