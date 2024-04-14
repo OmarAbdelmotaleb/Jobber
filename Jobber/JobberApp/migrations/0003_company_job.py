@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('job_url', models.URLField()),
                 ('job_location', models.CharField(max_length=100)),
                 ('job_description', models.TextField()),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='myapp.company')),
+                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='JobberApp.company')),
             ],
         ),
     ]
