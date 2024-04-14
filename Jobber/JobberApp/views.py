@@ -1,29 +1,54 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserDetails, Company, Job
-from .serializers import UserDetailsSerializer, JobSerializer, CompanySerializer  # Importing serializer
+from .models import Users, Company, Applications
+from .serializers import UsersSerializer, ApplicationsSerializer, CompanySerializer  # Importing serializer
+from django.http import Http404
+# NOTE: Removed JobSerializer from Serializers and Job from Models
 
-class UserDetailsAPIView(APIView):
-    def get(self, request):
-        userDetails = UserDetails.objects.all()
-        serializer = UserDetailsSerializer(userDetails, many=True)
-        return Response(serializer.data)
+from datetime import datetime
+
+class UsersAPIView(APIView):
+    def get(self, request, pk=None):
+        if pk is not None:
+            try:
+                user = Users.objects.get(pk=pk)
+                serializer = UsersSerializer(user)
+                return Response(serializer.data)
+            except Users.DoesNotExist:
+                raise Http404
+        else:
+            users = Users.objects.all()
+            serializer = UsersSerializer(users, many=True)
+            return Response(serializer.data)
 
     def post(self, request):
-        serializer = UserDetailsSerializer(data=request.data)
+        serializer = UsersSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
-        userDetails = UserDetails.objects.get(pk=pk)
-        serializer = UserDetailsSerializer(userDetails, data=request.data)
+        try:
+            user = Users.objects.get(pk=pk)
+        except Users.DoesNotExist:
+            raise Http404
+
+        serializer = UsersSerializer(user, data=request.data)
         if serializer.is_valid():
-            serializer.save()   
+            serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        try:
+            user = Users.objects.get(pk=pk)
+        except Users.DoesNotExist:
+            raise Http404
+
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
      # Add methods for Company CRUD operations
 class CompanyListCreateAPIView(APIView):
@@ -48,24 +73,28 @@ class CompanyListCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
      # Add methods for Job CRUD operations
-class JobListCreateAPIView(APIView):
+    
+
+class ApplicationListAPIView(APIView):
     def get(self, request):
-        jobs = Job.objects.all()
-        serializer = JobSerializer(jobs, many=True)
-        return Response(serializer.data)
+        applications = Applications.objects.all()
+        serializer = ApplicationsSerializer(applications, many=True)
 
-    def post(self, request):
-        serializer = JobSerializer(data=request.data)
-        print(serializer, 'check data>>>>>>..')
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        response_data = serializer.data
 
-    def put(self, request, pk):
-        job = Job.objects.get(pk=pk)
-        serializer = JobSerializer(job, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        for application in response_data:
+            if isinstance(application['date_applied'], str):
+                application['dateApplied'] = datetime.strptime(application['date_applied'], '%Y-%m-%d').strftime('%m/%d/%Y')
+            else:
+                application['dateApplied'] = application['date_applied'].strftime('%m/%d/%Y')
+
+            if application['follow_up_date']:
+                if isinstance(application['follow_up_date'], str):
+                    application['followUpDate'] = datetime.strptime(application['follow_up_date'], '%Y-%m-%d').strftime('%m/%d/%Y')
+                else:
+                    application['followUpDate'] = application['follow_up_date'].strftime('%m/%d/%Y')
+            else:
+                application['followUpDate'] = None
+
+        return Response(response_data)
+    

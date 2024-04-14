@@ -1,10 +1,11 @@
 from rest_framework import serializers
-from .models import UserDetails, Company, Job, Applications
+from .models import Users, Company, Applications
+# NOTE: Removed Job
 
-class UserDetailsSerializer(serializers.ModelSerializer):
+class UsersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserDetails
-        fields = ['id', 'jobTitle', 'jobUrl', 'companyName', 'location', 'jobDescription']
+        model = Users
+        fields = ['user_id', 'name', 'email', 'password']
 
 
 class CompanySerializer(serializers.ModelSerializer):
@@ -12,25 +13,18 @@ class CompanySerializer(serializers.ModelSerializer):
         model = Company
         fields = ['company_id', 'company_name', 'company_description']
 
-class JobSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Job
-        fields = ['job_id', 'job_title', 'job_url', 'company_id', 'job_location', 'job_description']
-    
-
 class ApplicationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Applications
-        fields = ['application_id', 'user_id', 'job_id']
+        fields = '__all__'
 
 def get_serializer_class(model_name):
-     if model_name == 'UserDetails':
-        return UserDetailsSerializer
+     if model_name == 'Users':
+        return UsersSerializer
      elif model_name == 'Company':
         return CompanySerializer
-     elif model_name == 'Job':
-        return JobSerializer
      elif model_name == 'Applications':
         return ApplicationsSerializer    
      else:
         raise ValueError(f"No serializer found for model '{model_name}'")
+     
