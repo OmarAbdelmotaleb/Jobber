@@ -15,8 +15,7 @@ class Migration(migrations.Migration):
             name='Applications',
             fields=[
                 ('application_id', models.AutoField(primary_key=True, serialize=False)),
-                ('job', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='JobberApp.job')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='JobberApp.userdetails')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='JobberApp.users')),
             ],
         ),
     ]

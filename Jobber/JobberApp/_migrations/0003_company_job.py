@@ -19,15 +19,15 @@ class Migration(migrations.Migration):
                 ('company_description', models.TextField()),
             ],
         ),
-        migrations.CreateModel(
-            name='Job',
-            fields=[
-                ('job_id', models.AutoField(primary_key=True, serialize=False)),
-                ('job_title', models.CharField(max_length=100)),
-                ('job_url', models.URLField()),
-                ('job_location', models.CharField(max_length=100)),
-                ('job_description', models.TextField()),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='JobberApp.company')),
-            ],
-        ),
+        # migrations.CreateModel(
+        #     name='Job',
+        #     fields=[
+        #         ('job_id', models.AutoField(primary_key=True, serialize=False)),
+        #         ('job_title', models.CharField(max_length=100)),
+        #         ('job_url', models.URLField()),
+        #         ('job_location', models.CharField(max_length=100)),
+        #         ('job_description', models.TextField()),
+        #         ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='JobberApp.company')),
+        #     ],
+        # ),
     ]

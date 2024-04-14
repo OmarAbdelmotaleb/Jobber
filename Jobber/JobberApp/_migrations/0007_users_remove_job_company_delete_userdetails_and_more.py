@@ -28,13 +28,13 @@ class Migration(migrations.Migration):
                 "managed": False,
             },
         ),
-        migrations.RemoveField(
-            model_name="job",
-            name="company",
-        ),
-        migrations.DeleteModel(
-            name="UserDetails",
-        ),
+        # migrations.RemoveField(
+        #     model_name="job",
+        #     name="company",
+        # ),
+        # migrations.DeleteModel(
+        #     name="UserDetails",
+        # ),
         migrations.AlterModelOptions(
             name="applications",
             options={"managed": False},
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
             name="company",
             options={"managed": False},
         ),
-        migrations.DeleteModel(
-            name="Job",
-        ),
+        # migrations.DeleteModel(
+        #     name="Job",
+        # ),
     ]
