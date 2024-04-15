@@ -7,7 +7,6 @@ class Users(models.Model):
     password = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'users'
 
 class Company(models.Model):
@@ -16,12 +15,12 @@ class Company(models.Model):
     company_description = models.TextField()
 
     class Meta:
-        managed = False
         db_table = 'company'
 
 class Applications(models.Model):
     application_id = models.AutoField(primary_key=True)
 
+    user = models.ForeignKey('Users', models.DO_NOTHING)
     job_title = models.CharField(max_length=100)
     job_URL = models.CharField(max_length=255)
     company = models.CharField(max_length=100)
@@ -33,8 +32,6 @@ class Applications(models.Model):
     follow_up_date = models.DateField(blank=True, null=True)
     notes = models.TextField(blank=True)
     job_description = models.TextField(blank=True)
-    user = models.ForeignKey('Users', models.DO_NOTHING)
 
     class Meta:
-        managed = False
         db_table = 'applications'
