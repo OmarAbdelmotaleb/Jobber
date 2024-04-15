@@ -1,12 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from datetime import datetime
 from .models import Users, Company, Applications
 from .serializers import UsersSerializer, ApplicationsSerializer, CompanySerializer  # Importing serializer
 from django.http import Http404
 # NOTE: Removed JobSerializer from Serializers and Job from Models
-
-from datetime import datetime
 
 class UsersAPIView(APIView):
     def get(self, request, pk=None):
@@ -52,10 +51,18 @@ class UsersAPIView(APIView):
 
      # Add methods for Company CRUD operations
 class CompanyListCreateAPIView(APIView):
-    def get(self, request):
-        companies = Company.objects.all()
-        serializer = CompanySerializer(companies, many=True)
-        return Response(serializer.data)
+    def get(self, request, pk=None):
+        if pk is not None:
+            try:
+                company = Company.objects.get(pk=pk)
+                serializer = CompanySerializer(company)
+                return Response(serializer.data)
+            except Company.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            companies = Company.objects.all()
+            serializer = CompanySerializer(companies, many=True)
+            return Response(serializer.data)
 
     def post(self, request):
         serializer = CompanySerializer(data=request.data)
@@ -71,6 +78,34 @@ class CompanyListCreateAPIView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        try:
+            company = Company.objects.get(pk=pk)
+        except Company.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        company.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    # def get(self, request):
+    #     companies = Company.objects.all()
+    #     serializer = CompanySerializer(companies, many=True)
+    #     return Response(serializer.data)
+
+    # def post(self, request):
+    #     serializer = CompanySerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # def put(self, request, pk):
+    #     company = Company.objects.get(pk=pk)
+    #     serializer = CompanySerializer(company, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
      # Add methods for Job CRUD operations
     
