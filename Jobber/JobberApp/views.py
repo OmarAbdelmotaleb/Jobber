@@ -133,3 +133,13 @@ class ApplicationListAPIView(APIView):
 
         return Response(response_data)
     
+class ApplicationCreateAPIView(APIView):
+    def post(self, request):
+        serializer = ApplicationsSerializer(data=request.data) 
+        if serializer.is_valid():
+            default_user, _ = Users.objects.get_or_create(name='John Doe')
+            serializer.validated_data['user'] = default_user
+
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

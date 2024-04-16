@@ -21,17 +21,17 @@ class Applications(models.Model):
     application_id = models.AutoField(primary_key=True)
 
     user = models.ForeignKey('Users', models.DO_NOTHING)
-    job_title = models.CharField(max_length=100)
-    job_URL = models.CharField(max_length=255)
-    company = models.CharField(max_length=100)
-    status = models.CharField(max_length=100)
-    max_salary = models.DecimalField(max_digits=10, decimal_places=0)
-    min_salary = models.DecimalField(max_digits=10, decimal_places=0)
-    location = models.CharField(max_length=100)
-    date_applied = models.DateField()
-    follow_up_date = models.DateField(blank=True, null=True)
-    notes = models.TextField(blank=True)
-    job_description = models.TextField(blank=True)
+    job_title = models.CharField(max_length=100, null=True)
+    job_URL = models.CharField(max_length=255,null=True)
+    company = models.CharField(max_length=100, null=True)
+    status = models.CharField(max_length=100, null=True)
+    max_salary = models.DecimalField(max_digits=10, decimal_places=0, null=True)
+    min_salary = models.DecimalField(max_digits=10, decimal_places=0, null=True)
+    location = models.CharField(max_length=100, null=True)
+    date_applied = models.DateField(default='2024-10-20', null=True)
+    follow_up_date = models.DateField(blank=True, default='2024-10-20', null=True)
+    notes = models.TextField(blank=True, null=True)
+    job_description = models.TextField(blank=True, null=True)
 
     class Meta:
         db_table = 'applications'

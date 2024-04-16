@@ -18,6 +18,16 @@ class ApplicationsSerializer(serializers.ModelSerializer):
         model = Applications
         fields = '__all__'
 
+        extra_kwargs = {
+            'max_salary': {'required': False},
+            'min_salary': {'required': False},
+            'date_applied': {'required': False},
+            'follow_up_date': {'required': False},
+            'notes': {'required': False},
+            'user': {'required': False}
+            # Add similar entries for other optional fields (user might be a related field)
+        }
+
 def get_serializer_class(model_name):
      if model_name == 'Users':
         return UsersSerializer
