@@ -87,25 +87,6 @@ class CompanyListCreateAPIView(APIView):
         
         company.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    # def get(self, request):
-    #     companies = Company.objects.all()
-    #     serializer = CompanySerializer(companies, many=True)
-    #     return Response(serializer.data)
-
-    # def post(self, request):
-    #     serializer = CompanySerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # def put(self, request, pk):
-    #     company = Company.objects.get(pk=pk)
-    #     serializer = CompanySerializer(company, data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
      # Add methods for Job CRUD operations
     
@@ -132,6 +113,35 @@ class ApplicationListAPIView(APIView):
                 application['followUpDate'] = None
 
         return Response(response_data)
+    
+    def post(self, request):
+        serializer = ApplicationsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self, request, pk):
+
+        try:
+            applications = Applications.objects.get(pk=pk)
+        except Applications.DoesNotExist:
+            raise Http404
+
+        serializer = ApplicationsSerializer(applications, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        try:
+            applications = Applications.objects.get(pk=pk)
+        except Applications.DoesNotExist:
+            raise Http404
+
+        applications.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
 class ApplicationCreateAPIView(APIView):
     def post(self, request):
