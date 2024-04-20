@@ -35,3 +35,14 @@ class Applications(models.Model):
 
     class Meta:
         db_table = 'applications'
+
+class Contacts(models.Model):
+    contact_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, null=True)
+    company = models.CharField(max_length=100, null=True)
+    email = models.CharField(max_length=100, null=True)
+    phone = models.CharField(max_length=100, null=True)
+    link = models.CharField(max_length=100, null=True)
+
+    class Meta:
+        db_table = 'contacts'

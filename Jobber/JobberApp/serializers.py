@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Users, Company, Applications
+from .models import Users, Company, Applications, Contacts
 # NOTE: Removed Job
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -12,6 +12,19 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = ['company_id', 'company_name', 'company_description']
+
+class ContactsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contacts
+        fields = '__all__'
+
+        extra_kwargs = {
+            'name': {'required': False},
+            'company': {'required': False},
+            'email': {'required': False},
+            'phone': {'required': False},
+            'link': {'required': False},
+        }
 
 class ApplicationsSerializer(serializers.ModelSerializer):
     class Meta:
