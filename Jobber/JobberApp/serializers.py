@@ -20,10 +20,15 @@ class ContactsSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {
             'name': {'required': False},
+            'loc': {'required': False},
+            'desc': {'required': False},
+            'status': {'required': False},
             'company': {'required': False},
             'email': {'required': False},
             'phone': {'required': False},
+            'relationship': {'required': False},
             'link': {'required': False},
+            'follow_up_date': {'required': False},
         }
 
 class ApplicationsSerializer(serializers.ModelSerializer):
