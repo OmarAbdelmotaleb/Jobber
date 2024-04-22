@@ -11,8 +11,11 @@ class Users(models.Model):
 
 class Company(models.Model):
     company_id = models.AutoField(primary_key=True)
-    company_name = models.CharField(max_length=100)
-    company_description = models.TextField()
+    name = models.CharField(max_length=100, null=True)
+    industry = models.CharField(null=True)
+    location = models.CharField(max_length=100, null=True)
+    website = models.CharField(max_length=255, null=True)
+    linkedin = models.CharField(max_length=255, null=True)
 
     class Meta:
         db_table = 'company'
@@ -39,16 +42,16 @@ class Applications(models.Model):
 class Contacts(models.Model):
     # Location, Goal, Status, Relationship, Follow up
     contact_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, null=True)
-    loc = models.CharField(max_length=100, null=True)
-    desc = models.CharField(max_length=100, null=True)
-    status = models.CharField(max_length=100, null=True)
+    fullName = models.CharField(max_length=100, null=True)
     company = models.CharField(max_length=100, null=True)
-    email = models.CharField(max_length=100, null=True)
+    location = models.CharField(max_length=100, null=True)
+    goal = models.CharField(max_length=100, null=True)
+    status = models.CharField(max_length=100, null=True)
     phone = models.CharField(max_length=100, null=True)
+    email = models.CharField(max_length=100, null=True)
     relationship = models.CharField(max_length=100, null=True)
-    link = models.CharField(max_length=100, null=True)
-    follow_up_date = models.DateField(blank=True, default='2024-10-20', null=True)
+    linkedin = models.CharField(max_length=100, null=True)
+    followUpDate = models.DateField(blank=True, default='2024-10-20', null=True)
     
     class Meta:
         db_table = 'contacts'
