@@ -5,8 +5,13 @@ from datetime import datetime
 from .models import Users, Company, Applications
 from .serializers import UsersSerializer, ApplicationsSerializer, CompanySerializer  # Importing serializer
 from django.http import Http404
+import requests
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.http import HttpResponse
 # NOTE: Removed JobSerializer from Serializers and Job from Models
 
+    
 class UsersAPIView(APIView):
     def get(self, request, pk=None):
         if pk is not None:
@@ -143,3 +148,20 @@ class ApplicationCreateAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+def home(request):
+    # Your view logic goes here
+    return HttpResponse("Welcome to the home page of JobberApp!")
+
+def send_payload_to_api(request):
+    if request.user.is_authenticated:
+        # Example payload data
+        payload = {'key': 'value'}
+        # Example API endpoint URL
+        api_url = 'https://example.com/api/endpoint/'
+        # Make a POST request to the API with the payload
+        response = requests.post(api_url, json=payload)
+        # Return the API response to the client
+        return JsonResponse(response.json())
+    else:
+        return JsonResponse({'error': 'User not authenticated'}, status=401)

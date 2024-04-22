@@ -10,4 +10,5 @@ urlpatterns = [
     path('users/', UsersAPIView.as_view(), name='users-list-create'),
     path('users/<int:pk>/', UsersAPIView.as_view(), name='users-detail'),
     path('job-applications/', ApplicationCreateAPIView.as_view(), name='job-application-create'),
+    path('', views.home, name='home'),
 ]
