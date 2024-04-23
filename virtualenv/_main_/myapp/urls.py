@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import CompanyListCreateAPIView, JobListCreateAPIView, ApplicationsAPIView, UsersAPIView
+from .views import CompanyListCreateAPIView, JobListCreateAPIView, ApplicationsAPIView, UsersAPIView, ApplicationCopareAPIView
 
 urlpatterns = [
     path('companies/', CompanyListCreateAPIView.as_view(), name='company-list-create'),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('applications/<int:pk>/', ApplicationsAPIView.as_view(), name='application-detail'),
     path('users/', views.UsersAPIView.as_view(), name='users-list-create'),
     path('users/<int:pk>/', views.UsersAPIView.as_view(), name='user-detail'),
+    path('application/compare/', ApplicationCopareAPIView.as_view(), name='application-compare')
 ]

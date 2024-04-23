@@ -1,7 +1,8 @@
+from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Company, Job, Applications, Users
+from .models import Company, Job, Applications, Users, Resume
 from .serializers import JobSerializer, CompanySerializer, ApplicationsSerializer, UsersSerializer  # Importing serializer
 
      # Add methods for Company CRUD operations
@@ -196,3 +197,33 @@ class UsersAPIView(APIView):
 
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class ApplicationCompareAPIView(APIView):
+     def post(self, request):
+        job_description_id = request.data.get('job_description_id')
+        resume_file = request.FILES.get('resume')
+
+        if not job_description_id or not resume_file:
+            return Response({'error': 'Please provide job description ID and resume file'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            job_description = Applications.objects.get(pk=job_description_id)
+        except Applications.DoesNotExist:
+            return Response({'error': 'Job description with the provided ID does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+        default_user, _ = Users.objects.get_or_create(name='John Doe')
+        resume = Resume(user=default_user, file=resume_file, id=1)
+        resume.save()
+
+        missing_words = self.compare_texts(job_description.job_description, resume.file)
+
+        return Response({'missing_words': missing_words})
+
+
+     def compare_texts(self, job_description_text, resume):
+        job_description_text = set(job_description_text.lower().split())
+        resume_text = set(resume.read().lower().split())
+
+        missing_words = list(job_description_text - resume_text)
+
+        return missing_words

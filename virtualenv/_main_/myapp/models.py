@@ -11,11 +11,13 @@ class Applications(models.Model):
 
 class Company(models.Model):
     company_id = models.AutoField(primary_key=True)
-    company_name = models.CharField(max_length=100)
-    company_description = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=100, null=True)
+    industry = models.CharField(null=True)
+    location = models.CharField(max_length=100, null=True)
+    website = models.CharField(max_length=255, null=True)
+    linkedin = models.CharField(max_length=255, null=True)
 
     class Meta:
-        managed = False
         db_table = 'company'
 
 
@@ -41,3 +43,11 @@ class Users(models.Model):
     class Meta:
         managed = False
         db_table = 'users'
+
+class Resume(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    file = models.FileField(upload_to='resumes/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'resume'
