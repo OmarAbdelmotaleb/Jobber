@@ -158,7 +158,7 @@ def send_payload_to_api(request):
         # Example payload data
         payload = {'key': 'value'}
         # Example API endpoint URL
-        api_url = 'https://example.com/api/endpoint/'
+        api_url = 'https://localhost:8000/api/endpoint/'
         # Make a POST request to the API with the payload
         response = requests.post(api_url, json=payload)
         # Return the API response to the client
