@@ -11,7 +11,7 @@ class UsersSerializer(serializers.ModelSerializer):
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ['company_id', 'company_name', 'company_description']
+        fields = '__all__'
 
 class ContactsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,8 +20,7 @@ class ContactsSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {
             'name': {'required': False},
-            'loc': {'required': False},
-            'desc': {'required': False},
+            'location': {'required': False},
             'status': {'required': False},
             'company': {'required': False},
             'email': {'required': False},
@@ -52,7 +51,9 @@ def get_serializer_class(model_name):
      elif model_name == 'Company':
         return CompanySerializer
      elif model_name == 'Applications':
-        return ApplicationsSerializer    
+        return ApplicationsSerializer 
+     elif model_name == 'Contacts':
+        return ContactsSerializer   
      else:
         raise ValueError(f"No serializer found for model '{model_name}'")
      
